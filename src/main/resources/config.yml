@@ -1,0 +1,17 @@
+#
+# SilkChests
+#
+# Implements the ability to silk a chest or double chest
+#
+# debug: false
+#
+silk:
+  perms: true
+  creative: false
+  level: 1
+  tools:
+    - diamond_axe
+    - iron_axe
+    - golden_axe
+    - wood_axe
+  instantly: true

@@ -1,0 +1,98 @@
+group 'com.spawnchunk.silkchests'
+version '1.0.1'
+
+allprojects {
+    apply plugin: 'idea'
+    idea {
+        module {
+            inheritOutputDirs = true
+        }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    maven {
+        name 'spigot-repo'
+        url 'http://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name 'vault-repo'
+        url 'http://nexus.hc.to/content/repositories/pub_releases/'
+    }
+    maven {
+        name 'private'
+        url 'https://hub.spawnchunk.com/nexus/repository/private/'
+        credentials {
+            username "$mavenUser"
+            password "$mavenPassword"
+        }
+    }
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.bukkit', name: 'bukkit', version: '1.8.8-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_12_R1', version: '1.12.2-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_11_R1', version: '1.11.2-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_10_R1', version: '1.10.2-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_9_R2', version: '1.9.4-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_9_R1', version: '1.9-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_8_R3', version: '1.8.8-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_8_R2', version: '1.8.3-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit.craftbukkit', name: 'v1_8_R1', version: '1.8-R0.1-SNAPSHOT'
+    compile group: 'net.milkbowl.vault', name: 'Vault', version: '1.5.6'
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+}
+
+publishing {
+    publications {
+        snapshot(MavenPublication) {
+            groupId "$group"
+            version "$version"+"-SNAPSHOT"
+            artifactId "$rootProject.name-$version"
+
+            from components.java
+        }
+        release(MavenPublication) {
+            groupId "$group"
+            version "$version"
+            artifactId "$rootProject.name-$version"
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name 'snapshot'
+            credentials {
+                username "$mavenUser"
+                password "$mavenPassword"
+            }
+            url 'https://hub.spawnchunk.com/nexus/repository/snapshot/'
+        }
+        maven {
+            name 'release'
+            credentials {
+                username "$mavenUser"
+                password "$mavenPassword"
+            }
+            url 'https://hub.spawnchunk.com/nexus/repository/release/'
+        }
+        maven {
+            name 'public'
+            credentials {
+                username "$mavenUser"
+                password "$mavenPassword"
+            }
+            url 'https://hub.spawnchunk.com/nexus/repository/public/'
+        }
+    }
+}

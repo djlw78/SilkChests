@@ -1,0 +1,19 @@
+name: SilkChests
+main: com.spawnchunk.silkchests.SilkChests
+version: 1.0
+copyright: Copyright © 2017 spawnchunk.com
+author: klugemonkey
+softdepend: [Vault]
+
+permissions:
+  silkchests.admin:
+    description: Enables the silkchests admin command
+    default: false
+  chests.silk:
+    description: Enables silking of chests with silk chest tool
+    default: false
+
+commands:
+  silkchests:
+    description: Reload the silkchests plugin
+    usage: "\u00a7cUsage: /silkchests reload"
