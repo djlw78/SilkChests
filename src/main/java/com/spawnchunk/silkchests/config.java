@@ -27,7 +27,7 @@ class config {
     static void parseConfig() {
 
         // parse the configuration file
-        // if(fc.contains("debug")) debug = fc.getBoolean("debug");
+        if(fc.contains("debug")) debug = fc.getBoolean("debug");
         if(fc.contains("silk.perms")) {
             silkPerms = fc.getBoolean("silk.perms");
             if(debug && silkPerms) logger.info(sectionSymbol(String.format("%s Silk only with permission", pluginPrefix)));

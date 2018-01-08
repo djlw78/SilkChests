@@ -3,8 +3,7 @@
 #
 # Implements the ability to silk a chest or double chest
 #
-# debug: false
-#
+debug: false
 silk:
   perms: true
   creative: false
