@@ -57,8 +57,10 @@ public class v1_12_R1 implements NMS {
                                 slotItem.remove("Slot");
                                 int amount = slotItem.getInt("Count");
                                 short durability = slotItem.getShort("Damage");
+                                NBTTagCompound tag = slotItem.getCompound("tag");
                                 ItemStack item = new ItemStack(material, amount, durability);
                                 net.minecraft.server.v1_12_R1.ItemStack is = CraftItemStack.asNMSCopy(item);
+                                if(tag != null) is.setTag(tag);
                                 items.put(slot, CraftItemStack.asBukkitCopy(is));
                             }
                         }
