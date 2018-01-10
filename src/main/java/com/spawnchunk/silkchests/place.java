@@ -9,6 +9,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import static com.spawnchunk.silkchests.SilkChests.*;
+import static com.spawnchunk.silkchests.chest.getChestName;
+import static com.spawnchunk.silkchests.chest.setChestName;
+import static com.spawnchunk.silkchests.global.sectionSymbol;
 import static com.spawnchunk.silkchests.global.yawToFace;
 import static com.spawnchunk.silkchests.inventory.setInventory;
 
@@ -34,9 +37,13 @@ public class place {
         Block block = event.getBlockPlaced();
         ItemStack item = event.getItemInHand();
         Boolean large = nms.isLarge(item);
+        String name = getChestName(block);
+        if(name != null && !name.isEmpty() && name.equals(sectionSymbol("&rLarge chest"))) name = "";
+        setChestName(block, name);
         if(large) {
             Block adjoining = getBlockAdjoining(player, block);
             adjoining.setType(item.getType());
+            setChestName(adjoining, name);
         }
         BlockState bs = block.getState();
         Chest ch = (Chest) bs;
@@ -62,10 +69,30 @@ public class place {
     private static boolean canPlace(BlockPlaceEvent event) {
         Block block = event.getBlockPlaced();
         ItemStack item = event.getItemInHand();
-        Material type = item.getType();
         Boolean large = nms.isLarge(item);
         if(!large) return true;
+        // check around the block placed
+        if(!checkBlock(block)) return false;
+        // if large, check around the adjoining block placed
         Block adjoining = getBlockAdjoining(event.getPlayer(), block);
+        return(checkAdjoiningBlock(block, adjoining));
+    }
+
+    private static boolean checkBlock(Block block) {
+        Material type = block.getType();
+        Block north = block.getRelative(BlockFace.NORTH);
+        Block east = block.getRelative(BlockFace.EAST);
+        Block south = block.getRelative(BlockFace.SOUTH);
+        Block west = block.getRelative(BlockFace.WEST);
+        if(north.getType().equals(type)) return false;
+        if(east.getType().equals(type)) return false;
+        if(south.getType().equals(type)) return false;
+        if(west.getType().equals(type)) return false;
+        return true;
+    }
+
+    private static boolean checkAdjoiningBlock(Block block, Block adjoining) {
+        Material type = block.getType();
         if(adjoining.getType() != Material.AIR) return false;
         Block north = adjoining.getRelative(BlockFace.NORTH);
         Block east = adjoining.getRelative(BlockFace.EAST);

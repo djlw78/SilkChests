@@ -39,13 +39,12 @@ public class inventory {
         return inventory;
     }
 
-    static String toString(Inventory inventory, Boolean large) {
+    static String toString(Inventory inventory, Boolean large, String customName) {
         Map<Integer, ItemStack> itemMap = getItemMap(inventory);
         StringBuilder string = new StringBuilder("{");
         string.append(String.format("Large:%d", large?1:0));
-        String name = inventory.getName();
-        if(!name.isEmpty() && !name.equals("container.chest")) {
-            string.append(String.format(",display:{Name:\"%s\"}",name));
+        if(!customName.isEmpty()) {
+            string.append(String.format(",display:{Name:\"%s\"}",customName));
         }
         if(!itemMap.isEmpty()) {
             string.append(",Items:[");

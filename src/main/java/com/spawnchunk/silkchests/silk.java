@@ -1,9 +1,6 @@
 package com.spawnchunk.silkchests;
 
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -94,7 +91,17 @@ public class silk {
         Boolean large = isLarge(ch);
         Inventory inventory = large ? ch.getInventory().getHolder().getInventory() : ch.getInventory();
         ItemStack item = new ItemStack(type, 1);
-        String tag = com.spawnchunk.silkchests.inventory.toString(inventory, large);
+        String customName = "";
+        if(ch instanceof Nameable) {
+            Nameable nameable = (Nameable) ch;
+            String name = nameable.getCustomName();
+            if(name != null && !name.isEmpty() && !name.equals("container.chest")) {
+                customName = name;
+            } else {
+                if(large) customName = sectionSymbol("&rLarge chest");
+            }
+        }
+        String tag = com.spawnchunk.silkchests.inventory.toString(inventory, large, customName);
         item = nms.setTag(item, tag);
         player.getWorld().dropItem(block.getLocation(), item);
     }
